@@ -58,7 +58,10 @@ public:
 
     juce::AudioVisualiserComponent longWaveViewer,
         shortWaveViewer;
+
 private:
+    juce::dsp::Oscillator<float> osc;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VisualiserPluginV2AudioProcessor)
 };
