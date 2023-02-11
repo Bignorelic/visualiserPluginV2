@@ -25,8 +25,8 @@ VisualiserPluginV2AudioProcessor::VisualiserPluginV2AudioProcessor()
 #endif
 {
     longWaveViewer.setRepaintRate(60);
-    longWaveViewer.setBufferSize(1024);
-    longWaveViewer.setSamplesPerBlock(16);
+    longWaveViewer.setBufferSize(8192);
+    longWaveViewer.setSamplesPerBlock(64);
 
     shortWaveViewer.setRepaintRate(60);
     shortWaveViewer.setBufferSize(1024);
@@ -177,15 +177,26 @@ void VisualiserPluginV2AudioProcessor::processBlock (juce::AudioBuffer<float>& b
 
     juce::AudioBuffer<float> reducedBuffer(buffer.getNumChannels(), buffer.getNumSamples());
 
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        auto* channelData = buffer.getWritePointer(channel);
+        auto* reducedChannelData = reducedBuffer.getWritePointer(channel);
 
         // ..do something to the data...
+        for (int sample = 0; sample < buffer.getNumSamples(); sample++)
+        {
+            //float signalToReduce = *channelData;
+
+            *reducedChannelData = *channelData * 0.5;
+
+            channelData++;
+            reducedChannelData++;
+        }
     }
 
     longWaveViewer.pushBuffer(buffer);
-    shortWaveViewer.pushBuffer(buffer);
+    shortWaveViewer.pushBuffer(reducedBuffer);
 }
 
 //==============================================================================
