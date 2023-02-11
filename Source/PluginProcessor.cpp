@@ -19,9 +19,18 @@ VisualiserPluginV2AudioProcessor::VisualiserPluginV2AudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+    longWaveViewer(2),
+    shortWaveViewer(2)
 #endif
 {
+    longWaveViewer.setRepaintRate(60);
+    longWaveViewer.setBufferSize(1024);
+    longWaveViewer.setSamplesPerBlock(16);
+
+    shortWaveViewer.setRepaintRate(60);
+    shortWaveViewer.setBufferSize(1024);
+    shortWaveViewer.setSamplesPerBlock(16);
 }
 
 VisualiserPluginV2AudioProcessor::~VisualiserPluginV2AudioProcessor()
@@ -156,6 +165,9 @@ void VisualiserPluginV2AudioProcessor::processBlock (juce::AudioBuffer<float>& b
 
         // ..do something to the data...
     }
+
+    longWaveViewer.pushBuffer(buffer);
+    shortWaveViewer.pushBuffer(buffer);
 }
 
 //==============================================================================

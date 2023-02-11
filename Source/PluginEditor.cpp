@@ -15,6 +15,12 @@ VisualiserPluginV2AudioProcessorEditor::VisualiserPluginV2AudioProcessorEditor (
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
+
+    addAndMakeVisible(audioProcessor.longWaveViewer);
+    addAndMakeVisible(audioProcessor.shortWaveViewer);
+    audioProcessor.longWaveViewer.setColours(juce::Colours::black, juce::Colours::white);
+    audioProcessor.shortWaveViewer.setColours(juce::Colours::black, juce::Colours::white);
+
     setSize (1280, 400);
 }
 
@@ -35,10 +41,13 @@ void VisualiserPluginV2AudioProcessorEditor::paint (juce::Graphics& g)
     auto shortWaveformArea = bounds.removeFromRight(500);
     auto spectrumArea = bounds;
 
-    g.setColour(Colours::red);
-    g.drawRect(longWaveformArea, 1.f);
-    g.drawRect(shortWaveformArea, 1.f);
-    g.drawRect(spectrumArea, 1.f);
+    //g.setColour(Colours::red);
+    //g.drawRect(longWaveformArea, 1.f);
+    //g.drawRect(shortWaveformArea, 1.f);
+    //g.drawRect(spectrumArea, 1.f);
+
+    // Path p;
+    //audioProcessor.longWaveViewer.getChannelAsPath(p, ,16, )
 }
 
 void VisualiserPluginV2AudioProcessorEditor::resized()
@@ -50,4 +59,7 @@ void VisualiserPluginV2AudioProcessorEditor::resized()
     auto longWaveformArea = bounds.removeFromBottom(100);
     auto shortWaveformArea = bounds.removeFromRight(500);
     auto spectrumAre = bounds;
+
+    audioProcessor.longWaveViewer.setBounds(longWaveformArea);
+    audioProcessor.shortWaveViewer.setBounds(shortWaveformArea);
 }
